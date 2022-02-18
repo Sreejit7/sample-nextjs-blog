@@ -6,7 +6,16 @@ import { Post } from "../../models/Post";
 type Props = {
   post: Post;
 };
+
 const PostDetail = ({ post }: Props) => {
+  /**
+   * @description For rendering the content section
+   * @param object The current post section object
+   * @param text Thet text inside the current object
+   * @param index Index of the current object in parent section
+   * @param type Type of the object
+   * @returns Formatted content section
+   */
   const getContentFragment = (
     object: any,
     text: any,
@@ -39,6 +48,7 @@ const PostDetail = ({ post }: Props) => {
       }
     }
 
+    // To-do: Add more possible types to render specific content for more types
     switch (type) {
       case "paragraph":
         return (
