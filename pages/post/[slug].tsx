@@ -5,7 +5,6 @@ import {
   NextPage,
 } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import {
   Author,
@@ -14,6 +13,7 @@ import {
   PostDetail,
   PostWidget,
 } from "../../components";
+import CommentsForm from "../../components/Comments/CommentsForm";
 import { Post } from "../../models/Post";
 import { fetchPostDetails, fetchPostPaths } from "../../services";
 
@@ -23,8 +23,6 @@ type Props = {
 
 const PostDetails: NextPage<Props> = ({ post }) => {
   const { isFallback } = useRouter();
-
-  console.log(post);
 
   if (isFallback) {
     return (
@@ -44,7 +42,8 @@ const PostDetails: NextPage<Props> = ({ post }) => {
         <section className="lg:col-span-8 col-span-1">
           <PostDetail post={post} />
           <Author author={post.author} />
-          <Comments />
+          <CommentsForm slug={post.slug} />
+          {post.comments.length > 0 && <Comments comments={post.comments} />}
         </section>
         <section className="lg:col-span-4 col-span-1">
           <ul className="lg:sticky relative top-8">

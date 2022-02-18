@@ -1,5 +1,5 @@
 import { request, gql } from "graphql-request";
-import { Category } from "../models/Post";
+import { Category, Comment } from "../models/Post";
 
 const graphqlUrl = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
@@ -90,6 +90,7 @@ export const fetchRelatedPosts = async (slug: string, categories: string[]) => {
           slug_not: $slug
           AND: { categories_some: { slug_in: $categories } }
         }
+        orderBy: createdAt_DESC
         last: 3
       ) {
         title
@@ -122,6 +123,12 @@ export const fetchPostDetails = async (slug?: string) => {
         categories {
           name
           slug
+        }
+        comments(orderBy: createdAt_DESC, first: 3) {
+          name
+          email
+          comment
+          createdAt
         }
         content {
           raw
@@ -158,5 +165,35 @@ export const fetchPostPaths = async () => {
   if (graphqlUrl) {
     const result = await request(graphqlUrl, query);
     return result.postsConnection.edges;
+  }
+};
+
+export const submitComment = async (commentObj: Comment) => {
+  const result = await fetch("/api/comments", {
+    method: "POST",
+    body: JSON.stringify(commentObj),
+    headers: {
+      "Content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+
+  return result.json();
+};
+
+export const fetchAllComments = async (slug: string) => {
+  const query = gql`
+    query GetComments($slug: String!) {
+      comments(where: { post: { slug: $slug } }, orderBy: createdAt_DESC) {
+        name
+        createdAt
+        comment
+      }
+    }
+  `;
+
+  if (graphqlUrl) {
+    const result = await request(graphqlUrl, query, { slug });
+    return result.comments;
   }
 };

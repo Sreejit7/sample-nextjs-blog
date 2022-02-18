@@ -8,7 +8,8 @@ export type Post = {
   featuredImage: {
     url: string;
   };
-  content?: { children: any[] };
+  content?: { raw: { children: any[] } };
+  comments: Comment[];
 };
 
 export type Author = {
@@ -22,4 +23,12 @@ export type Author = {
 export type Category = {
   name: string;
   slug: string;
+};
+
+export type Comment = {
+  name: string;
+  email: string;
+  comment: string;
+  slug?: string;
+  createdAt?: string;
 };

@@ -40,7 +40,7 @@ const PostCard = (post: Props) => {
               {postItem.author.name}
             </p>
           </section>
-          <section className="flex items-center justify-center w-full font-medium text-gray-500">
+          <section className="flex items-center justify-center font-medium text-gray-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 inline mr-2 text-pink-500"
@@ -66,9 +66,9 @@ const PostCard = (post: Props) => {
       </p>
       <section className="text-center">
         <Link passHref href={`/post/${postItem.slug}`}>
-          <span className="cursor-pointer transition duration-500 transform hover:-translate-y-1 hover:shadow-lg inline-block bg-blue-500 rounded-full text-white text-lg px-6 py-2">
+          <button className="cursor-pointer transition duration-500 transform hover:-translate-y-1 hover:shadow-lg inline-block bg-blue-500 rounded-full text-white text-lg px-6 py-2">
             Continue Reading
-          </span>
+          </button>
         </Link>
       </section>
     </article>
