@@ -41,8 +41,8 @@ export const fetchPosts = async () => {
 
 export const fetchCategories = async () => {
   const query = gql`
-    query MyQuery {
-      categoriesConnection {
+    query MyQuery() {
+      categoriesConnection() {
         edges {
           node {
             name
@@ -229,5 +229,54 @@ export const fetchFeaturedPosts = async () => {
   if (graphqlUrl) {
     const result = await request(graphqlUrl, query);
     return result.postsConnection.edges;
+  }
+};
+
+export const fetchCategoryPosts = async (slug?: string) => {
+  const query = gql`
+    query GetCategoryPosts($slug: String!) {
+      postsConnection(
+        where: { categories_some: { slug: $slug } }
+        orderBy: createdAt_DESC
+      ) {
+        edges {
+          node {
+            author {
+              image {
+                url
+              }
+              name
+            }
+            featuredImage {
+              url
+            }
+            createdAt
+            title
+            slug
+            excerpt
+          }
+        }
+      }
+    }
+  `;
+
+  if (graphqlUrl) {
+    const result = await request(graphqlUrl, query, { slug });
+    return result.postsConnection.edges;
+  }
+};
+
+export const fetchCategoryNameBySlug = async (slug?: string) => {
+  const query = gql`
+    query GetCategoryName($slug: String!) {
+      category(where: { slug: $slug }) {
+        name
+      }
+    }
+  `;
+
+  if (graphqlUrl) {
+    const result = await request(graphqlUrl, query, { slug });
+    return result.category;
   }
 };
