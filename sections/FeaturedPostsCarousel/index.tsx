@@ -47,8 +47,6 @@ const FeaturedPostsCarousel = () => {
       keyBoardControl={true}
       containerClass="mb-8"
       itemClass="px-4"
-      customTransition="ease-in .6"
-      transitionDuration={600}
     >
       {featuredPosts.map((post) => (
         <FeaturedPostCard key={post.slug} post={post} />
