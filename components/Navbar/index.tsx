@@ -16,13 +16,13 @@ const Navbar = () => {
   return (
     <header className="container mx-auto px-10 mb-8">
       <section className="border-b w-full inline-block py-8">
-        <section className="md:float-left block">
+        <section className="text-center md:float-left block">
           <Link passHref href="/">
             <span
               data-testid="title"
-              className="cursor-pointer font-bold text-4xl text-white"
+              className="cursor-pointer font-bold text-3xl md:text-4xl text-white"
             >
-              {`Sreejit's Dev Blog`}
+              {`Sreejit's Tech Blog`}
             </span>
           </Link>
         </section>
