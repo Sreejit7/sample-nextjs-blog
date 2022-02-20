@@ -39,19 +39,21 @@ const FeaturedPostsCarousel = () => {
   };
 
   return (
-    <Carousel
-      responsive={responsive}
-      infinite
-      autoPlay
-      autoPlaySpeed={5000}
-      keyBoardControl={true}
-      containerClass="mb-8"
-      itemClass="px-4"
-    >
-      {featuredPosts.map((post) => (
-        <FeaturedPostCard key={post.slug} post={post} />
-      ))}
-    </Carousel>
+    {featuredPosts.length && (
+       <Carousel
+        responsive={responsive}
+        infinite
+        autoPlay
+        autoPlaySpeed={5000}
+        keyBoardControl={true}
+        containerClass="mb-8"
+        itemClass="px-4"
+       >
+        {featuredPosts.map((post) => (
+          <FeaturedPostCard key={post.slug} post={post} />
+        ))}
+      </Carousel>
+     )}
   );
 };
 
