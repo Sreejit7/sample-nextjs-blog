@@ -1,12 +1,12 @@
 import { request, gql } from "graphql-request";
-import { Category, Comment } from "../models/Post";
+import { Comment } from "../models/Post";
 
 const graphqlUrl = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT;
 
 export const fetchPosts = async () => {
   const query = gql`
     query MyQuery {
-      postsConnection {
+      postsConnection(orderBy: createdAt_DESC) {
         edges {
           node {
             author {
@@ -64,7 +64,7 @@ export const fetchRecentPosts = async () => {
     query GetPostDetails() {
       posts(
         orderBy: createdAt_DESC,
-        last: 3
+        first: 3
       ){
         title
         featuredImage {
@@ -91,7 +91,7 @@ export const fetchRelatedPosts = async (slug: string, categories: string[]) => {
           AND: { categories_some: { slug_in: $categories } }
         }
         orderBy: createdAt_DESC
-        last: 3
+        first: 3
       ) {
         title
         featuredImage {
@@ -195,5 +195,39 @@ export const fetchAllComments = async (slug: string) => {
   if (graphqlUrl) {
     const result = await request(graphqlUrl, query, { slug });
     return result.comments;
+  }
+};
+
+export const fetchFeaturedPosts = async () => {
+  const query = gql`
+    query GetFeaturedPosts {
+      postsConnection(
+        where: { featuredPost: true }
+        orderBy: createdAt_DESC
+        first: 10
+      ) {
+        edges {
+          node {
+            author {
+              image {
+                url
+              }
+              name
+            }
+            featuredImage {
+              url
+            }
+            createdAt
+            title
+            slug
+          }
+        }
+      }
+    }
+  `;
+
+  if (graphqlUrl) {
+    const result = await request(graphqlUrl, query);
+    return result.postsConnection.edges;
   }
 };

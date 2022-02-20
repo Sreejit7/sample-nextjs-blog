@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: rgb(54, 125, 240);
+  background-color: rgb(32, 39, 54);
 }
 
 a {
@@ -40,12 +40,24 @@ text-shadow {
   }
 }
 
-.react-multi-carousel-list {
-  & .arrow-btn {
-    transition: width 300ms ease;
-    width: 50px;
-    &:hover {
-      width: 60px;
-    }
+@mixin arrow-btn {
+  transition: width 300ms ease;
+  width: 50px;
+  &:hover {
+    width: 60px;
+  }
+  position: absolute;
+  padding: 0.5rem;
+  background-color: #2563eb !important;
+}
+.react-multiple-carousel__arrow {
+  @include arrow-btn();
+
+  &--left {
+    left: 0 !important;
+  }
+
+  &--right {
+    right: 0 !important;
   }
 }
