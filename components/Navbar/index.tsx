@@ -18,12 +18,12 @@ const Navbar = () => {
       <section className="border-b w-full inline-block py-8">
         <section className="text-center md:float-left block">
           <Link passHref href="/">
-            <span
+            <h1
               data-testid="title"
-              className="cursor-pointer font-bold text-3xl md:text-4xl text-white"
+              className="transition duration-700 cursor-pointer font-bold text-3xl md:text-4xl text-white hover:text-blue-500"
             >
               {`Sreejit's Tech Blog`}
-            </span>
+            </h1>
           </Link>
         </section>
         <nav className="hidden md:float-left md:contents">
@@ -34,7 +34,7 @@ const Navbar = () => {
               href={`/category/${category.slug}`}
             >
               <span
-                className="md:float-right mt-2 align-middle ml-4 font-semibold cursor-pointer text-white"
+                className="transition duration-700 md:float-right mt-2 align-middle ml-4 font-semibold cursor-pointer text-white hover:text-blue-500"
                 data-testid={`category-${category.slug}`}
               >
                 {category.name}
