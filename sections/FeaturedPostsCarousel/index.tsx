@@ -13,7 +13,7 @@ const FeaturedPostsCarousel = () => {
       const ftPosts = posts.map((post: { node: Post }) => post.node);
       setFeaturedPosts(ftPosts);
     });
-  }, [featuredPosts]);
+  }, []);
 
   const responsive = {
     superLargeDesktop: {
@@ -39,19 +39,21 @@ const FeaturedPostsCarousel = () => {
   };
 
   return (
-    <Carousel
-      responsive={responsive}
-      infinite
-      autoPlay
-      autoPlaySpeed={5000}
-      keyBoardControl={true}
-      containerClass="mb-8"
-      itemClass="px-4"
-    >
-      {featuredPosts.map((post) => (
-        <FeaturedPostCard key={post.slug} post={post} />
-      ))}
-    </Carousel>
+    <>
+      <Carousel
+        responsive={responsive}
+        infinite
+        autoPlay
+        autoPlaySpeed={5000}
+        keyBoardControl={true}
+        containerClass="mb-8"
+        itemClass="px-4"
+      >
+        {featuredPosts.map((post) => (
+          <FeaturedPostCard key={post.slug} post={post} />
+        ))}
+      </Carousel>
+    </>
   );
 };
 
