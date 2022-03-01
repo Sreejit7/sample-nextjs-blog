@@ -33,14 +33,16 @@ const PostWidget = ({ categories, slug }: Props) => {
         relatedPosts.map((post) => (
           <li key={post.slug} className="px-3 py-2 mt-4">
             <article className="flex items-center justify-space-between gap-5">
-              <Image
-                src={post.featuredImage.url}
-                alt={post.title}
-                width={50}
-                height={35}
-                className="rounded-sm shadow-sm"
-              />
-              <section>
+              <div className="flex-0">
+                <Image
+                  src={post.featuredImage.url}
+                  alt={post.title}
+                  width={50}
+                  height={35}
+                  className="rounded-sm shadow-sm"
+                />
+              </div>
+              <section className="flex-1">
                 <span className="text-gray-500 font-light text-sm">
                   {moment(post.createdAt).format("MMM DD, YYYY")}
                 </span>
