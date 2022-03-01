@@ -47,6 +47,7 @@ const FeaturedPostsCarousel = () => {
       keyBoardControl={true}
       containerClass="mb-8"
       itemClass="px-4"
+      removeArrowOnDeviceType={["tablet", "mobile"]}
     >
       {featuredPosts.map((post) => (
         <FeaturedPostCard key={post.slug} post={post} />
