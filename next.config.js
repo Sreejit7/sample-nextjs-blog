@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["media.graphassets.com"],
+    domains: ["media.graphcms.com", "media.graphassets.com"],
   },
   env: {
     HOST_NAME: process.env.HOST_NAME,
