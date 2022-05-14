@@ -1,12 +1,19 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import { Layout } from "../components";
+import { ModalContextProvider } from "../contexts/useModalContext";
+import { Modal } from "../components";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <ModalContextProvider>
+      <>
+        <Modal />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </>
+    </ModalContextProvider>
   );
 }
 
