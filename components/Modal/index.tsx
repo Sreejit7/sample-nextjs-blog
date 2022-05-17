@@ -4,6 +4,9 @@ import {
   useModalContext,
 } from "../../contexts/useModalContext";
 
+const FOCUSABLE_SELECTORS =
+  "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]";
+
 const Modal = () => {
   const {
     state: {
@@ -20,7 +23,6 @@ const Modal = () => {
     if (modalExists && center && top) {
       modalRef.current.style.top = `${top}px`;
       modalRef.current.style.left = `${center}px`;
-      modalRef.current.focus();
     }
   }, [modalExists, center, top]);
 
@@ -35,7 +37,7 @@ const Modal = () => {
     };
 
     /**
-     * @description close the modal if clicked outside
+     * Close the modal if clicked outside
      * @param event a mouse click event
      */
     const handleOutsideClick = (event: MouseEvent) => {
@@ -79,6 +81,53 @@ const Modal = () => {
       }
     };
   }, [dispatch, modalExists]);
+
+  useEffect(() => {
+    const focusableElements = Array.from(
+      modalRef.current.querySelectorAll(
+        FOCUSABLE_SELECTORS
+      ) as NodeListOf<HTMLElement>
+    );
+
+    const firstFocusableEl = focusableElements[0];
+    const lastFocusableEl = focusableElements[focusableElements.length - 1];
+    // Storing the element which opens the modal
+    const prevFocusEl = document.activeElement as HTMLElement;
+
+    // On opening modal, focus the first focusable element
+    if (modalExists) {
+      firstFocusableEl?.focus();
+    }
+
+    /**
+     * Traps the focus inside the modal
+     * @param e the focus event
+     */
+    const trapFocus = (e: FocusEvent) => {
+      // If the focus goes outside the modal
+      if (
+        modalExists &&
+        modalRef.current &&
+        !modalRef.current.contains(e.target as Node)
+      ) {
+        if (e.target === firstFocusableEl) {
+          // If last focus was on first focus element, focus the last element
+          lastFocusableEl.focus();
+        } else {
+          // If focus was elsewhere (last focusable element), focus the first element
+          firstFocusableEl.focus();
+        }
+      }
+    };
+
+    document.addEventListener("focus", trapFocus, true);
+
+    return () => {
+      document.removeEventListener("focus", trapFocus, true);
+      // Focus back to the element which opened the modal
+      prevFocusEl?.focus();
+    };
+  }, [modalExists]);
 
   return (
     <section

@@ -35,8 +35,8 @@ const initialState: State = {
   modalExists: false,
   children: null,
   location: {
-    top: null,
-    center: null,
+    top: -1,
+    center: -1,
   },
 };
 
@@ -44,6 +44,7 @@ const modalReducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
     case ModalActionTypes.CREATE_MODAL:
       return {
+        ...state,
         modalExists: true,
         children: action.children,
         location: action.location,

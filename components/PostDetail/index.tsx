@@ -129,14 +129,11 @@ const PostDetail = ({ post }: Props) => {
     dispatch({
       type: ModalActionTypes.CREATE_MODAL,
       children: (
-        // Trap the focus inside the modal when it's mounted
-        <FocusTrap>
-          <ul className="flex flex-col gap-1">
-            {shareWidgets.map((widget, idx) => (
-              <React.Fragment key={idx}>{widget.item}</React.Fragment>
-            ))}
-          </ul>
-        </FocusTrap>
+        <ul className="flex flex-col gap-1">
+          {shareWidgets.map((widget, idx) => (
+            <React.Fragment key={idx}>{widget.item}</React.Fragment>
+          ))}
+        </ul>
       ),
       location: {
         top: bottom + 5,
