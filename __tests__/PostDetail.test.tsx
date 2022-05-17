@@ -8,12 +8,7 @@ import {
 import "@testing-library/jest-dom";
 import { PostDetail } from "../components";
 import { Post } from "../models/Post";
-
-Object.defineProperty(navigator, "clipboard", {
-  value: {
-    writeText: () => {},
-  },
-});
+import { ModalContextProvider } from "../contexts/useModalContext";
 
 // Mocks useRouter
 const useRouter = jest.spyOn(require("next/router"), "useRouter");
@@ -44,15 +39,18 @@ const mockPost: Post = {
 };
 
 describe("PostDetail", () => {
-  let getByTestId: (
-    id: Matcher,
-    options?: MatcherOptions | undefined
-  ) => HTMLElement;
+  // let getByTestId: (
+  //   id: Matcher,
+  //   options?: MatcherOptions | undefined
+  // ) => HTMLElement;
 
   let component: RenderResult;
   beforeEach(() => {
-    component = render(<PostDetail post={mockPost} />);
-    getByTestId = component.getByTestId;
+    component = render(
+      <ModalContextProvider>
+        <PostDetail post={mockPost} />
+      </ModalContextProvider>
+    );
 
     // Mocks Next.js route
     mockNextUseRouter({
@@ -61,24 +59,11 @@ describe("PostDetail", () => {
   });
 
   it("should render proper post details", () => {
+    const { getByTestId } = component;
+
     expect(getByTestId("post-title")).toHaveTextContent("Test Post");
     expect(getByTestId("post-author-name")).toHaveTextContent("Sreejit De");
     expect(getByTestId("post-createdAt")).toHaveTextContent("Jan 17, 2022");
   });
 
-  it("should have proper functionality for 'Copy Link' button", () => {
-    jest.spyOn(navigator.clipboard, "writeText");
-    jest.useFakeTimers();
-    jest.spyOn(global, "setTimeout");
-
-    // Initially, the button displays 'Copy Link'
-    expect(getByTestId("copy-link-text")).toHaveTextContent("Copy Link");
-
-    fireEvent.click(getByTestId("copy-link-btn"));
-
-    expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(1);
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    // On click, the button should display 'Link Copied'
-    expect(getByTestId("copy-link-text")).toHaveTextContent("Link Copied!");
-  });
 });
