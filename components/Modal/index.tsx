@@ -93,6 +93,7 @@ const Modal = () => {
     const lastFocusableEl = focusableElements[focusableElements.length - 1];
     // Storing the element which opens the modal
     const prevFocusEl = document.activeElement as HTMLElement;
+    let currentFocusEl = document.activeElement as HTMLElement;
 
     // On opening modal, focus the first focusable element
     if (modalExists) {
@@ -104,26 +105,43 @@ const Modal = () => {
      * @param e the focus event
      */
     const trapFocus = (e: FocusEvent) => {
+      e.preventDefault();
       // If the focus goes outside the modal
       if (
         modalExists &&
         modalRef.current &&
-        !modalRef.current.contains(e.target as Node)
+        !focusableElements.includes(e.target as HTMLElement)
       ) {
-        if (e.target === firstFocusableEl) {
+        if (currentFocusEl === lastFocusableEl) {
           // If last focus was on first focus element, focus the last element
-          lastFocusableEl.focus();
-        } else {
-          // If focus was elsewhere (last focusable element), focus the first element
           firstFocusableEl.focus();
         }
+        currentFocusEl = document.activeElement as HTMLElement;
+      } else {
+        currentFocusEl = e.target as HTMLElement;
+      }
+    };
+
+    // Work-around for trapping reverse focus with shift + tab
+    const trapRevFocus = (e: KeyboardEvent) => {
+      if (
+        e.key === "Tab" &&
+        e.shiftKey &&
+        document.activeElement === firstFocusableEl
+      ) {
+        // If focus was on the first element, move focus to last element
+        lastFocusableEl.focus();
+        currentFocusEl = lastFocusableEl;
+        e.preventDefault();
       }
     };
 
     document.addEventListener("focus", trapFocus, true);
+    document.addEventListener("keydown", trapRevFocus);
 
     return () => {
       document.removeEventListener("focus", trapFocus, true);
+      document.removeEventListener("keydown", trapRevFocus);
       // Focus back to the element which opened the modal
       prevFocusEl?.focus();
     };
